@@ -1,21 +1,28 @@
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
+import { useNavigation } from '@react-navigation/native';
 import { View, Text, StyleSheet, FlatList, Keyboard, Image } from 'react-native';
 
 import { colors } from '../constants/colors';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import { screenNames } from '../navigation/ScreenNames';
 
 const movieCard = ({ movie }) => {
-  return (<View style={styles.movieCard}>
+  const navigation = useNavigation();
+  const { title, release_date, vote_average, poster_path } = movie;
+
+  return (<TouchableOpacity activeOpacity={0.6} onPress={() => navigation.navigate(screenNames.Details, { movie })} style={styles.movieCard}>
     <View style={styles.imageContainer}>
-      <Image source={{ uri: `https://image.tmdb.org/t/p/original/${movie.poster_path}` }}
-        style={styles.poster} accessibilityLabel={`${movie.title} poster`} alt={`${movie.title} poster`} />
+      <Image source={{ uri: `https://image.tmdb.org/t/p/original/${poster_path}` }}
+        style={styles.poster} accessibilityLabel={`${title} poster`} alt={`${title} poster`} />
     </View>
     <View style={styles.movieInfoContainer}>
-      <Text style={styles.title}>{movie.title}</Text>
-      <Text style={styles.date}>{movie.release_date}</Text>
-      <Text style={styles.rating}>{movie.vote_average}</Text>
+      <Text style={styles.title} numberOfLines={1}
+      >{title}</Text>
+      <Text style={styles.date}>{release_date}</Text>
+      <Text style={styles.rating}>{vote_average}</Text>
     </View>
-  </View>);
+  </TouchableOpacity>);
 };
 
 const MemoizedMovieCard = memo(movieCard);
@@ -74,7 +81,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row'
   },
   movieInfoContainer: {
-    marginLeft: 8
+    marginLeft: 8,
+    flex: 1
   },
   poster: { width: 80, height: 110, resizeMode: 'contain', },
   separator: {
