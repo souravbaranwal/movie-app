@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { applyMiddleware, createStore } from 'redux';
 import { persistStore, persistReducer } from 'redux-persist';
