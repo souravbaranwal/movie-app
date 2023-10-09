@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, SafeAreaView } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
 import { colors } from '../constants/colors';
@@ -11,7 +11,7 @@ const Tab = createMaterialTopTabNavigator();
 export const HomeScreen = () => {
 
   return (
-    <View style={styles.mainContainer}>
+    <SafeAreaView style={styles.safeContainer}>
       <Header title="Superflix" />
       <View style={{ flex: 1 }}>
         <Tab.Navigator
@@ -23,13 +23,13 @@ export const HomeScreen = () => {
           <Tab.Screen name={screenNames.Upcoming} component={UpcomingMovies} />
         </Tab.Navigator>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  mainContainer: {
+  safeContainer: {
     flex: 1,
-    backgroundColor: colors.white
-  }
+    backgroundColor: colors.white,
+  },
 });

@@ -1,7 +1,6 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import Toast from 'react-native-toast-message';
-import { StyleSheet, SafeAreaView } from 'react-native';
 import { QueryClient, QueryClientProvider } from 'react-query';
 
 import Store, { Persistor } from './redux/store';
@@ -12,24 +11,15 @@ const queryClient = new QueryClient();
 
 const App = () => {
   return (
-    <SafeAreaView style={styles.safeContainer}>
-      <Provider store={Store}>
-        <PersistGate loading={null} persistor={Persistor}>
-          <QueryClientProvider client={queryClient}>
-            <AppNavigator />
-            <Toast />
-          </QueryClientProvider>
-        </PersistGate>
-      </Provider>
-    </SafeAreaView>
+    <Provider store={Store}>
+      <PersistGate loading={null} persistor={Persistor}>
+        <QueryClientProvider client={queryClient}>
+          <AppNavigator />
+          <Toast />
+        </QueryClientProvider>
+      </PersistGate>
+    </Provider>
   );
 };
 
 export default App;
-
-const styles = StyleSheet.create({
-  safeContainer: {
-    flex: 1,
-    backgroundColor: '#ffffff',
-  },
-});

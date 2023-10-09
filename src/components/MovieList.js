@@ -9,18 +9,17 @@ import { screenNames } from '../navigation/ScreenNames';
 
 const movieCard = ({ movie }) => {
   const navigation = useNavigation();
+  console.log(JSON.stringify(movie, null, 2));
   const { title, release_date, vote_average, poster_path } = movie;
 
   return (<TouchableOpacity activeOpacity={0.6} onPress={() => navigation.navigate(screenNames.Details, { movie })} style={styles.movieCard}>
-    <View style={styles.imageContainer}>
-      <Image source={{ uri: `https://image.tmdb.org/t/p/original/${poster_path}` }}
-        style={styles.poster} accessibilityLabel={`${title} poster`} alt={`${title} poster`} />
-    </View>
+    <Image source={{ uri: `https://image.tmdb.org/t/p/original/${poster_path}` }}
+      style={styles.poster} accessibilityLabel={`${title} poster`} alt={`${title} poster`} />
     <View style={styles.movieInfoContainer}>
       <Text style={styles.title} numberOfLines={1}
       >{title}</Text>
-      <Text style={styles.date}>{release_date}</Text>
-      <Text style={styles.rating}>{vote_average}</Text>
+      <Text style={styles.label}>Release Date: <Text style={styles.value}>{release_date}</Text></Text>
+      <Text style={styles.label}>Rating: <Text style={styles.value}>{vote_average}</Text></Text>
     </View>
   </TouchableOpacity>);
 };
@@ -66,7 +65,6 @@ const styles = StyleSheet.create({
   },
   movieCard: {
     backgroundColor: 'white',
-    padding: 16,
     borderRadius: 8,
     shadowColor: '#000',
     shadowOffset: {
@@ -81,29 +79,30 @@ const styles = StyleSheet.create({
     flexDirection: 'row'
   },
   movieInfoContainer: {
-    marginLeft: 8,
+    padding: 8,
     flex: 1
   },
-  poster: { width: 80, height: 110, resizeMode: 'contain', },
+  poster: { width: 80, height: 110, resizeMode: 'cover', borderTopLeftRadius: 8, borderBottomLeftRadius: 8 },
   separator: {
     marginBottom: 8,
   },
-  imageContainer: {
-
-  },
   title: {
     fontSize: 16,
-    fontWeight: 500,
+    fontWeight: '500',
     marginBottom: 4,
     color: colors.black
   },
-  date: {
+  value: {
     marginBottom: 4,
     color: colors.secondaryText,
-    fontSize: 13
+    fontSize: 13,
+    fontWeight: 'normal'
   },
-  rating: {
-    color: colors.secondaryText
+  label: {
+    marginBottom: 4,
+    color: colors.secondaryText,
+    fontSize: 13,
+    fontWeight: '500'
   }
 });
 
