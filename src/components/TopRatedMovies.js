@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import { useQueryClient } from 'react-query';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 
 import { MovieList } from './MovieList';
@@ -21,7 +21,6 @@ export const TopRatedMovies = () => {
 
   return (
     <View style={styles.mainContainer}>
-      <Text>Top Rated movies</Text>
       <MovieList movies={movies} isLoading={isLoading} refetch={refetch} />
     </View>
   );

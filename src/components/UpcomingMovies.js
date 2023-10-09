@@ -1,12 +1,12 @@
 import React, { useCallback } from 'react';
 import { useQueryClient } from 'react-query';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 
-import { useMovies } from '../hooks/query/useMovies';
-import { queryKeys } from '../hooks/query/queryKeys';
 import { MovieList } from './MovieList';
 import { colors } from '../constants/colors';
+import { useMovies } from '../hooks/query/useMovies';
+import { queryKeys } from '../hooks/query/queryKeys';
 
 
 
@@ -23,7 +23,6 @@ export const UpcomingMovies = () => {
 
   return (
     <View style={styles.mainContainer}>
-      <Text>Upcoming movies</Text>
       <MovieList movies={movies} isLoading={isLoading} refetch={refetch} />
     </View>
   );
