@@ -1,1 +1,1 @@
-export const screenNames = { Home: 'Home' };
+export const screenNames = { Home: 'Home', NowPlaying: 'Now Playing', Popular: 'Popular', Top: 'Top', Upcoming: 'Upcoming' };

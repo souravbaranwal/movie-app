@@ -1,3 +1,6 @@
 export const queryKeys = {
-  POPULAR: 'POPULAR'
+  POPULAR: 'POPULAR',
+  NOW_PLAYING: 'NOW_PLAYING',
+  TOP_RATED: 'TOP_RATED',
+  UPCOMING: 'UPCOMING',
 };
