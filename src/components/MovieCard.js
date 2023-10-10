@@ -2,7 +2,7 @@ import React, { memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import FastImage from 'react-native-fast-image';
 import { useNavigation } from '@react-navigation/native';
-import { View, Text, StyleSheet, Pressable } from 'react-native';
+import { Text, View, StyleSheet, Pressable } from 'react-native';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -10,6 +10,7 @@ import Animated, {
   withSpring,
 } from 'react-native-reanimated';
 
+import { getImageUrl } from '../utils';
 import { colors } from '../constants/colors';
 import { screenNames } from '../navigation/ScreenNames';
 
@@ -41,17 +42,17 @@ const movieCard = ({ movie, index }) => {
 
   return (<AnimatedPressable onPress={handleNavigation}
     onLongPress={handleNavigation}
-    style={[styles.movieCard, animatedStyle]}>
+    style={[styles.movieCard, animatedStyle]} >
     <FastImage source={{
-      uri: `https://image.tmdb.org/t/p/original/${poster_path}`, priority: FastImage.priority.high,
+      uri: getImageUrl(poster_path), priority: FastImage.priority.high,
     }} style={styles.poster} accessibilityLabel={`${title} poster`} alt={`${title} poster`} resizeMode={FastImage.resizeMode.cover} />
-    <View style={styles.movieInfoContainer}>
-      <Text style={styles.title} numberOfLines={1}
-      >{title}</Text>
+    <View style={styles.movieInfoContainer} >
+      <Animated.Text style={styles.title} numberOfLines={1}
+      >{title}</Animated.Text>
       <Text style={styles.label}>Release Date: <Text style={styles.value}>{release_date}</Text></Text>
       <Text style={styles.label}>Rating: <Text style={styles.value}>{vote_average}</Text></Text>
     </View>
-  </AnimatedPressable>);
+  </AnimatedPressable >);
 };
 
 export const MemoizedMovieCard = memo(movieCard);

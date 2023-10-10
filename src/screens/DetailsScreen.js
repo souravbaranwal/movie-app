@@ -1,34 +1,36 @@
 import React from 'react';
 import Icon from 'react-native-remix-icon';
+import FastImage from 'react-native-fast-image';
 import { useRoute } from '@react-navigation/native';
 import { useNavigation } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { View, StyleSheet, ImageBackground, Text, Image, TouchableOpacity, useWindowDimensions } from 'react-native';
+import { StyleSheet, ImageBackground, Text, TouchableOpacity, useWindowDimensions, View } from 'react-native';
 
+import { getImageUrl } from '../utils';
 import { colors } from '../constants/colors';
-
 
 export const DetailsScreen = () => {
   const { params: { movie: { title, backdrop_path, release_date, vote_average, overview, poster_path } } } = useRoute();
   const { height, width } = useWindowDimensions();
   const insets = useSafeAreaInsets();
   const navigation = useNavigation();
-
   return (
     <View style={styles.mainContainer}>
-      <ImageBackground source={{ uri: `https://image.tmdb.org/t/p/original/${backdrop_path}` }} resizeMode="cover" style={[styles.backdrop, { width, height: height / 2, paddingTop: insets.top }]}>
+      <ImageBackground source={{ uri: getImageUrl(backdrop_path) }} resizeMode="cover" style={[styles.backdrop, { width, height: height / 2, paddingTop: insets.top }]}>
         <TouchableOpacity activeOpacity={0.6} onPress={navigation.goBack} style={[styles.backIcon, { top: insets.top }]}>
           <Icon name="arrow-left-fill" size="32" color={colors.white} />
         </TouchableOpacity>
-        <Image source={{ uri: `https://image.tmdb.org/t/p/original/${poster_path}` }} resizeMode="cover" style={[styles.poster]} />
+        <FastImage source={{
+          uri: getImageUrl(poster_path), priority: FastImage.priority.high,
+        }} style={styles.poster} accessibilityLabel={`${title} poster`} alt={`${title} poster`} resizeMode={FastImage.resizeMode.cover} />
       </ImageBackground>
-      <View style={styles.infoContainer}>
+      <View style={styles.infoContainer} >
         <Text style={styles.title}>{title}</Text>
         <Text style={styles.label}>Release Date: <Text style={styles.value}>{release_date}</Text></Text>
         <Text style={styles.label}>Rating: <Text style={styles.value}>{vote_average}</Text></Text>
         <Text style={styles.label}>Description: <Text style={styles.value}>{overview}</Text></Text>
       </View>
-    </View>
+    </View >
   );
 };
 
