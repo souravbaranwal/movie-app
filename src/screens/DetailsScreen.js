@@ -4,7 +4,7 @@ import FastImage from 'react-native-fast-image';
 import { useRoute } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
-import { StyleSheet, ImageBackground, Text, TouchableOpacity, useWindowDimensions, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, useWindowDimensions, View } from 'react-native';
 
 import { colors } from '../constants/colors';
 import { getImageUrl, isFavorite } from '../utils';
@@ -13,29 +13,33 @@ import { updateFavoriteMovieAction } from '../redux/slices/movies';
 export const DetailsScreen = () => {
   const dispatch = useDispatch();
   const { params: { movie } } = useRoute();
+  const { height, width } = useWindowDimensions();
 
   const { title, backdrop_path, release_date, vote_average, overview, poster_path } = movie;
-  const { height, width } = useWindowDimensions();
   const navigation = useNavigation();
   const favoriteMovies = useSelector(({ moviesReducer: { favoriteMovies } }) => favoriteMovies);
 
-  const handleFavoriteMovie = () => {
+  const updateFavoriteMovie = () => {
     dispatch(updateFavoriteMovieAction(movie));
   };
 
   return (
-    <View style={styles.mainContainer}>
-      <ImageBackground source={{ uri: getImageUrl(backdrop_path) }} resizeMode="cover" style={[styles.backdrop, { width, height: height / 2 }]}>
+    <View style={styles.fill}>
+      <View style={{ width, height: height / 2 }}>
+        <FastImage source={{
+          uri: getImageUrl(backdrop_path), priority: FastImage.priority.high,
+        }} style={styles.fill} accessibilityLabel={`${title} poster`} alt={`${title} poster`} resizeMode={FastImage.resizeMode.cover} />
         <TouchableOpacity activeOpacity={0.6} onPress={navigation.goBack} style={styles.backIcon}>
           <Icon name="arrow-left-line" size="24" color={colors.black} />
         </TouchableOpacity>
         <FastImage source={{
           uri: getImageUrl(poster_path), priority: FastImage.priority.high,
         }} style={styles.poster} accessibilityLabel={`${title} poster`} alt={`${title} poster`} resizeMode={FastImage.resizeMode.cover} />
-        <TouchableOpacity activeOpacity={0.6} onPress={handleFavoriteMovie} style={styles.favoriteIcon}>
+        <TouchableOpacity activeOpacity={0.6} onPress={updateFavoriteMovie} style={styles.favoriteIcon}>
           <Icon name={`heart-2-${isFavorite(favoriteMovies, movie) ? 'fill' : 'line'}`} size="24" color={colors.red} />
         </TouchableOpacity>
-      </ImageBackground>
+
+      </View>
       <View style={styles.infoContainer} >
         <Text style={styles.title}>{title}</Text>
         <Text style={styles.label}>Release Date: <Text style={styles.value}>{release_date}</Text></Text>
@@ -47,7 +51,7 @@ export const DetailsScreen = () => {
 };
 
 const styles = StyleSheet.create({
-  mainContainer: {
+  fill: {
     flex: 1,
   },
   backdrop: {
