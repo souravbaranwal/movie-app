@@ -1,10 +1,9 @@
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { useNavigation } from '@react-navigation/native';
-import { View, Text, StyleSheet, FlatList, Keyboard, Image } from 'react-native';
+import { View, Text, StyleSheet, FlatList, Keyboard, Image, TouchableOpacity } from 'react-native';
 
 import { colors } from '../constants/colors';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 import { screenNames } from '../navigation/ScreenNames';
 
 const movieCard = ({ movie }) => {
@@ -73,7 +72,6 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.22,
     shadowRadius: 2.22,
-
     elevation: 3,
     marginHorizontal: 16,
     flexDirection: 'row'
@@ -84,7 +82,7 @@ const styles = StyleSheet.create({
   },
   poster: { width: 80, height: 110, resizeMode: 'cover', borderTopLeftRadius: 8, borderBottomLeftRadius: 8 },
   separator: {
-    marginBottom: 8,
+    marginBottom: 16,
   },
   title: {
     fontSize: 16,

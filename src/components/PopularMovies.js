@@ -3,8 +3,8 @@ import { useQueryClient } from 'react-query';
 import { View, StyleSheet } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 
-import { colors } from '../constants/colors';
 import { MovieList } from './MovieList';
+import { colors } from '../constants/colors';
 import { useMovies } from '../hooks/query/useMovies';
 import { queryKeys } from '../hooks/query/queryKeys';
 
