@@ -1,26 +1,54 @@
-import React, { memo } from 'react';
+import React, { memo, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { useNavigation } from '@react-navigation/native';
-import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  withTiming,
+  withSpring,
+} from 'react-native-reanimated';
 
 import { colors } from '../constants/colors';
 import { screenNames } from '../navigation/ScreenNames';
+import FastImage from 'react-native-fast-image';
 
+const AnimatedTouchable = Animated.createAnimatedComponent(TouchableOpacity);
 
-const movieCard = ({ movie }) => {
+const movieCard = ({ movie, index }) => {
   const navigation = useNavigation();
   const { title, release_date, vote_average, poster_path } = movie;
 
-  return (<TouchableOpacity activeOpacity={0.6} onPress={() => navigation.navigate(screenNames.Details, { movie })} style={[styles.movieCard]}>
-    <Image source={{ uri: `https://image.tmdb.org/t/p/original/${poster_path}` }}
-      style={styles.poster} accessibilityLabel={`${title} poster`} alt={`${title} poster`} />
+  const opacity = useSharedValue(0);
+
+  const animatedStyle = useAnimatedStyle(() => {
+    return {
+      opacity: withTiming(opacity.value, { duration: 500 * index }),
+    };
+  });
+
+  useFocusEffect(
+    useCallback(() => {
+      handleItemVisibility();
+    }, [])
+  );
+
+  const handleItemVisibility = () => {
+    opacity.value = withSpring(1);
+  };
+
+  return (<AnimatedTouchable activeOpacity={0.6} onPress={() => navigation.navigate(screenNames.Details, { movie })} style={[styles.movieCard, animatedStyle]}>
+    <FastImage source={{
+      uri: `https://image.tmdb.org/t/p/original/${poster_path}`, priority: FastImage.priority.normal,
+    }} style={styles.poster} accessibilityLabel={`${title} poster`} alt={`${title} poster`} resizeMode={FastImage.resizeMode.cover} />
     <View style={styles.movieInfoContainer}>
       <Text style={styles.title} numberOfLines={1}
       >{title}</Text>
       <Text style={styles.label}>Release Date: <Text style={styles.value}>{release_date}</Text></Text>
       <Text style={styles.label}>Rating: <Text style={styles.value}>{vote_average}</Text></Text>
     </View>
-  </TouchableOpacity>);
+  </AnimatedTouchable>);
 };
 
 export const MemoizedMovieCard = memo(movieCard);
@@ -46,7 +74,7 @@ const styles = StyleSheet.create({
     padding: 8,
     flex: 1
   },
-  poster: { width: 80, height: 110, resizeMode: 'cover', borderTopLeftRadius: 8, borderBottomLeftRadius: 8 },
+  poster: { width: 80, height: 110, borderTopLeftRadius: 8, borderBottomLeftRadius: 8 },
   title: {
     fontSize: 16,
     fontWeight: '500',
