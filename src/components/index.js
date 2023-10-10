@@ -6,3 +6,4 @@ export { TopRatedMovies } from './TopRatedMovies';
 export { UpcomingMovies } from './UpcomingMovies';
 export { NowPlayingMovies } from './NowPlayingMovies';
 export { EmptyPlaceholder } from './EmptyPlaceholder';
+export { SearchInput } from './SearchInput';

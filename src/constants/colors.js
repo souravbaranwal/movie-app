@@ -5,5 +5,6 @@ export const colors = {
   dark: '#D3D3D3',
   border: '#d8dcde',
   primaryText: '#000000',
-  secondaryText: '#8a8a8a'
+  secondaryText: '#8a8a8a',
+  lightGrey: '#e2e2e2',
 };

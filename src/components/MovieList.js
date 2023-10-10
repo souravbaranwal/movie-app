@@ -1,12 +1,15 @@
-import React, { memo } from 'react';
+import React, { memo, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useNavigation } from '@react-navigation/native';
 import { View, Text, StyleSheet, FlatList, Keyboard, Image, TouchableOpacity } from 'react-native';
 
 import { colors } from '../constants/colors';
-import { generateEmptyArray } from '../utils';
+import { SearchInput } from './SearchInput';
 import { EmptyPlaceholder } from './EmptyPlaceholder';
 import { screenNames } from '../navigation/ScreenNames';
+import { generateEmptyArray, checkEquality } from '../utils';
+
+const placeholderArray = generateEmptyArray(20);
 
 const movieCard = ({ movie }) => {
   const navigation = useNavigation();
@@ -27,23 +30,31 @@ const movieCard = ({ movie }) => {
 const MemoizedMovieCard = memo(movieCard);
 
 
-export const MovieList = ({ movies, isLoading, refetch }) => {
-  const placeholderArray = generateEmptyArray(20);
 
+
+export const MovieList = ({ movies, isLoading, refetch }) => {
+  const [searchString, setSearchString] = useState('');
   const keyExtractor = item => isLoading ? item : item.id;
   const renderItem = ({ item }) => isLoading ? <EmptyPlaceholder /> : <MemoizedMovieCard movie={item} />;
 
+  const filteredMovies = movies?.filter(
+    ({ title }) =>
+      checkEquality(title, searchString)
+  );
+
   return (
     <View style={styles.mainContainer}>
+
       <FlatList
-        data={isLoading ? placeholderArray : movies}
+        data={isLoading ? placeholderArray : filteredMovies}
         renderItem={renderItem}
         style={styles.flatList}
         keyExtractor={keyExtractor}
         showsVerticalScrollIndicator={false}
         onRefresh={refetch}
         refreshing={false}
-        onScrollBeginDrag={Keyboard.dismiss}
+        onScrollBeginDrag={() => Keyboard.dismiss()}
+        ListHeaderComponent={<SearchInput setSearchString={setSearchString} searchString={searchString} />}
         ItemSeparatorComponent={() => {
           return (
             <View
@@ -61,7 +72,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   flatList: {
-    paddingTop: 16,
   },
   movieCard: {
     backgroundColor: 'white',
