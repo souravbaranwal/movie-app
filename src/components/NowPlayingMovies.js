@@ -11,7 +11,7 @@ import { queryKeys } from '../hooks/query/queryKeys';
 export const NowPlayingMovies = () => {
   const queryClient = useQueryClient();
   const { useGetNowPlaying } = useMovies();
-  const { data: movies, isLoading, refetch } = useGetNowPlaying();
+  const { data: movies, isLoading, refetch, fetchNextPage, hasNextPage, isFetchingNextPage } = useGetNowPlaying();
 
   useFocusEffect(
     useCallback(() => {
@@ -21,7 +21,13 @@ export const NowPlayingMovies = () => {
 
   return (
     <View style={styles.mainContainer}>
-      <MovieList movies={movies} isLoading={isLoading} refetch={refetch} />
+      <MovieList movies={movies}
+        isLoading={isLoading}
+        refetch={refetch}
+        fetchNextPage={fetchNextPage}
+        hasNextPage={hasNextPage}
+        isFetchingNextPage={isFetchingNextPage}
+      />
     </View>
   );
 };

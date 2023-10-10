@@ -16,3 +16,14 @@ export const isFavorite = (list, object) => {
     return false;
   }
 };
+
+export const removeDuplicates = array => {
+  const seen = new Set();
+
+  return array.filter(el => {
+    const duplicate = seen.has(el.id);
+    seen.add(el.id);
+
+    return !duplicate;
+  });
+};

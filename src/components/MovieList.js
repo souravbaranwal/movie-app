@@ -1,18 +1,22 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { View, StyleSheet, FlatList, Keyboard, } from 'react-native';
+import { FlashList } from '@shopify/flash-list';
+import { ActivityIndicator, View, StyleSheet, Keyboard, RefreshControl } from 'react-native';
 
 import { SearchInput } from './SearchInput';
+import { colors } from '../constants/colors';
 import { MemoizedMovieCard } from './MovieCard';
 import { EmptyPlaceholder } from './EmptyPlaceholder';
 import { useIsFocused } from '@react-navigation/native';
 import { generateEmptyArray, checkEquality } from '../utils';
+import { useRefreshByUser } from '../hooks/useRefreshByUser';
 
 const placeholderArray = generateEmptyArray(20);
 
-export const MovieList = ({ movies = [], isLoading = false, refetch = () => { } }) => {
-  const [searchString, setSearchString] = useState('');
+export const MovieList = ({ movies = [], isLoading = false, refetch = () => { }, fetchNextPage, hasNextPage, isFetchingNextPage }) => {
   const isFocused = useIsFocused();
+  const [searchString, setSearchString] = useState('');
+  const { isRefetchingByUser, refetchByUser } = useRefreshByUser(refetch);
 
   const keyExtractor = item => isLoading ? item : item.id;
   const renderItem = ({ item, index }) => isLoading ? <EmptyPlaceholder /> : <MemoizedMovieCard movie={item} index={index} />;
@@ -20,6 +24,18 @@ export const MovieList = ({ movies = [], isLoading = false, refetch = () => { } 
   const filteredMovies = movies?.filter(
     ({ title }) =>
       checkEquality(title, searchString)
+  );
+
+  const handleLoadMore = () => {
+    if (hasNextPage) {
+      fetchNextPage();
+    }
+  };
+
+  const renderFooter = () => (
+    <View style={styles.footer}>
+      <ActivityIndicator color={colors.accent} size="small" />
+    </View>
   );
 
 
@@ -30,15 +46,25 @@ export const MovieList = ({ movies = [], isLoading = false, refetch = () => { } 
   return (
     <View style={styles.mainContainer}>
       <SearchInput setSearchString={setSearchString} searchString={searchString} />
-      <FlatList
+      <FlashList
         data={isLoading ? placeholderArray : filteredMovies}
         renderItem={renderItem}
         style={styles.flatList}
         keyExtractor={keyExtractor}
         showsVerticalScrollIndicator={false}
+        ListFooterComponent={isFetchingNextPage && renderFooter}
         onRefresh={refetch}
         refreshing={false}
         onScrollBeginDrag={Keyboard.dismiss}
+        onEndReached={handleLoadMore}
+        onEndReachedThreshold={1}
+        estimatedItemSize={120}
+        refreshControl={
+          <RefreshControl
+            refreshing={isRefetchingByUser}
+            onRefresh={refetchByUser}
+          />
+        }
         ItemSeparatorComponent={() => {
           return (
             <View
@@ -58,10 +84,16 @@ const styles = StyleSheet.create({
   separator: {
     marginBottom: 16,
   },
+  footer: {
+    marginHorizontal: 16
+  }
 });
 
 MovieList.prototypes = {
-  movies: PropTypes.array,
-  refetch: PropTypes.func.isRequired,
-  isLoading: PropTypes.bool.isRequired
+  movies: PropTypes.array.isRequired,
+  refetch: PropTypes.func,
+  isLoading: PropTypes.bool,
+  fetchNextPage: PropTypes.func,
+  hasNextPage: PropTypes.bool,
+  isFetchingNextPage: PropTypes.bool
 };
