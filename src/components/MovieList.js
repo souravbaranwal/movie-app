@@ -4,11 +4,12 @@ import { useNavigation } from '@react-navigation/native';
 import { View, Text, StyleSheet, FlatList, Keyboard, Image, TouchableOpacity } from 'react-native';
 
 import { colors } from '../constants/colors';
+import { generateEmptyArray } from '../utils';
+import { EmptyPlaceholder } from './EmptyPlaceholder';
 import { screenNames } from '../navigation/ScreenNames';
 
 const movieCard = ({ movie }) => {
   const navigation = useNavigation();
-  console.log(JSON.stringify(movie, null, 2));
   const { title, release_date, vote_average, poster_path } = movie;
 
   return (<TouchableOpacity activeOpacity={0.6} onPress={() => navigation.navigate(screenNames.Details, { movie })} style={styles.movieCard}>
@@ -27,15 +28,15 @@ const MemoizedMovieCard = memo(movieCard);
 
 
 export const MovieList = ({ movies, isLoading, refetch }) => {
-  console.log(isLoading, 'isLoading in Movielist component');
+  const placeholderArray = generateEmptyArray(20);
 
-  const keyExtractor = item => item.id;
-  const renderItem = ({ item }) => <MemoizedMovieCard movie={item} />;
+  const keyExtractor = item => isLoading ? item : item.id;
+  const renderItem = ({ item }) => isLoading ? <EmptyPlaceholder /> : <MemoizedMovieCard movie={item} />;
 
   return (
     <View style={styles.mainContainer}>
       <FlatList
-        data={movies}
+        data={isLoading ? placeholderArray : movies}
         renderItem={renderItem}
         style={styles.flatList}
         keyExtractor={keyExtractor}
@@ -64,6 +65,7 @@ const styles = StyleSheet.create({
   },
   movieCard: {
     backgroundColor: 'white',
+    height: 110,
     borderRadius: 8,
     shadowColor: '#000',
     shadowOffset: {
