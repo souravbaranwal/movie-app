@@ -5,7 +5,6 @@ import Icon from 'react-native-remix-icon';
 import FastImage from 'react-native-fast-image';
 import { useNavigation } from '@react-navigation/native';
 import { Text, View, StyleSheet, Pressable } from 'react-native';
-
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -18,6 +17,9 @@ import { getImageUrl, isFavorite } from '../utils';
 import { screenNames } from '../navigation/ScreenNames';
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
+
+
+
 
 const movieCard = ({ movie, index }) => {
   const navigation = useNavigation();

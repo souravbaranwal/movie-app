@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { FlashList } from '@shopify/flash-list';
-import { ActivityIndicator, View, StyleSheet, Keyboard, RefreshControl } from 'react-native';
+import { ActivityIndicator, Text, View, StyleSheet, Keyboard, RefreshControl } from 'react-native';
 
 import { SearchInput } from './SearchInput';
 import { colors } from '../constants/colors';
@@ -72,6 +72,11 @@ export const MovieList = ({ movies = [], isLoading = false, refetch = () => { },
             />
           );
         }}
+        ListEmptyComponent={
+          <View style={{ alignItems: 'center' }}>
+            <Text>There are no movies to show.</Text>
+          </View>
+        }
       />
     </View>
   );

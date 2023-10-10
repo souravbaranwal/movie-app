@@ -5,6 +5,6 @@ export { PopularMovies } from './PopularMovies';
 export { MemoizedMovieCard } from './MovieCard';
 export { TopRatedMovies } from './TopRatedMovies';
 export { UpcomingMovies } from './UpcomingMovies';
+export { FavoriteMovies } from './FavoriteMovies';
 export { NowPlayingMovies } from './NowPlayingMovies';
 export { EmptyPlaceholder } from './EmptyPlaceholder';
-export { FavoriteMovies } from './FavoriteMovies';
