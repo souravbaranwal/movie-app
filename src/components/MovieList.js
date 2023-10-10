@@ -10,7 +10,7 @@ import { generateEmptyArray, checkEquality } from '../utils';
 
 const placeholderArray = generateEmptyArray(20);
 
-export const MovieList = ({ movies, isLoading, refetch }) => {
+export const MovieList = ({ movies = [], isLoading = false, refetch = () => { } }) => {
   const [searchString, setSearchString] = useState('');
   const isFocused = useIsFocused();
 
@@ -21,6 +21,8 @@ export const MovieList = ({ movies, isLoading, refetch }) => {
     ({ title }) =>
       checkEquality(title, searchString)
   );
+
+
   if (!isFocused) {
     return null;
   }

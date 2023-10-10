@@ -4,7 +4,7 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 
 import { colors } from '../constants/colors';
 import { screenNames } from '../navigation/ScreenNames';
-import { NowPlayingMovies, PopularMovies, TopRatedMovies, UpcomingMovies, Header } from '../components';
+import { NowPlayingMovies, PopularMovies, TopRatedMovies, UpcomingMovies, Header, FavoriteMovies } from '../components';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -33,7 +33,7 @@ export const HomeScreen = () => {
           <Tab.Screen name={screenNames.Popular} component={PopularMovies} />
           <Tab.Screen name={screenNames.Top} component={TopRatedMovies} />
           <Tab.Screen name={screenNames.Upcoming} component={UpcomingMovies} />
-          <Tab.Screen name={screenNames.Favorites} component={UpcomingMovies} />
+          <Tab.Screen name={screenNames.Favorites} component={FavoriteMovies} />
         </Tab.Navigator>
       </View>
     </SafeAreaView>

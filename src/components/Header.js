@@ -1,6 +1,6 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
+import { View, Text, StyleSheet } from 'react-native';
 
 export const Header = ({ title }) => {
   return (

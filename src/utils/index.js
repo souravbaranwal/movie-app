@@ -7,3 +7,12 @@ export const checkEquality = (str1, str2) =>
 export const getImageUrl = (path) => {
   return `https://image.tmdb.org/t/p/original/${path}`;
 };
+
+export const isFavorite = (list, object) => {
+  const index = list.findIndex(item => item.id === object.id);
+  if (index !== -1) {
+    return true;
+  } else {
+    return false;
+  }
+};

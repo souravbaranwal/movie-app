@@ -1,8 +1,11 @@
 import React, { memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
+import Icon from 'react-native-remix-icon';
 import FastImage from 'react-native-fast-image';
 import { useNavigation } from '@react-navigation/native';
 import { Text, View, StyleSheet, Pressable } from 'react-native';
+
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -10,8 +13,8 @@ import Animated, {
   withSpring,
 } from 'react-native-reanimated';
 
-import { getImageUrl } from '../utils';
 import { colors } from '../constants/colors';
+import { getImageUrl, isFavorite } from '../utils';
 import { screenNames } from '../navigation/ScreenNames';
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
@@ -19,6 +22,7 @@ const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 const movieCard = ({ movie, index }) => {
   const navigation = useNavigation();
   const { title, release_date, vote_average, poster_path } = movie;
+  const favoriteMovies = useSelector(({ moviesReducer: { favoriteMovies } }) => favoriteMovies);
 
   const opacity = useSharedValue(0);
 
@@ -47,8 +51,11 @@ const movieCard = ({ movie, index }) => {
       uri: getImageUrl(poster_path), priority: FastImage.priority.high,
     }} style={styles.poster} accessibilityLabel={`${title} poster`} alt={`${title} poster`} resizeMode={FastImage.resizeMode.cover} />
     <View style={styles.movieInfoContainer} >
-      <Animated.Text style={styles.title} numberOfLines={1}
-      >{title}</Animated.Text>
+      <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+        <Text style={styles.title} numberOfLines={1}
+        >{title}</Text>
+        <Icon name={`heart-2-${isFavorite(favoriteMovies, movie) ? 'fill' : 'line'}`} size="24" color={colors.red} />
+      </View>
       <Text style={styles.label}>Release Date: <Text style={styles.value}>{release_date}</Text></Text>
       <Text style={styles.label}>Rating: <Text style={styles.value}>{vote_average}</Text></Text>
     </View>
@@ -78,7 +85,12 @@ const styles = StyleSheet.create({
     padding: 8,
     flex: 1
   },
-  poster: { width: 80, height: 110, borderTopLeftRadius: 8, borderBottomLeftRadius: 8 },
+  poster: {
+    width: 80,
+    height: 110,
+    borderTopLeftRadius: 8,
+    borderBottomLeftRadius: 8
+  },
   title: {
     fontSize: 16,
     fontWeight: '500',

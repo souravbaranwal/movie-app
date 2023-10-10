@@ -2,18 +2,27 @@ import React from 'react';
 import Icon from 'react-native-remix-icon';
 import FastImage from 'react-native-fast-image';
 import { useRoute } from '@react-navigation/native';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { StyleSheet, ImageBackground, Text, TouchableOpacity, useWindowDimensions, View } from 'react-native';
 
-import { getImageUrl } from '../utils';
 import { colors } from '../constants/colors';
+import { getImageUrl, isFavorite } from '../utils';
+import { updateFavoriteMovieAction } from '../redux/slices/movies';
 
 export const DetailsScreen = () => {
-  const { params: { movie: { title, backdrop_path, release_date, vote_average, overview, poster_path } } } = useRoute();
+  const dispatch = useDispatch();
+  const { params: { movie } } = useRoute();
+
+  const { title, backdrop_path, release_date, vote_average, overview, poster_path } = movie;
   const { height, width } = useWindowDimensions();
-  const insets = useSafeAreaInsets();
   const navigation = useNavigation();
+  const favoriteMovies = useSelector(({ moviesReducer: { favoriteMovies } }) => favoriteMovies);
+
+  const handleFavoriteMovie = () => {
+    dispatch(updateFavoriteMovieAction(movie));
+  };
+
   return (
     <View style={styles.mainContainer}>
       <ImageBackground source={{ uri: getImageUrl(backdrop_path) }} resizeMode="cover" style={[styles.backdrop, { width, height: height / 2 }]}>
@@ -23,6 +32,9 @@ export const DetailsScreen = () => {
         <FastImage source={{
           uri: getImageUrl(poster_path), priority: FastImage.priority.high,
         }} style={styles.poster} accessibilityLabel={`${title} poster`} alt={`${title} poster`} resizeMode={FastImage.resizeMode.cover} />
+        <TouchableOpacity activeOpacity={0.6} onPress={handleFavoriteMovie} style={styles.favoriteIcon}>
+          <Icon name={`heart-2-${isFavorite(favoriteMovies, movie) ? 'fill' : 'line'}`} size="24" color={colors.red} />
+        </TouchableOpacity>
       </ImageBackground>
       <View style={styles.infoContainer} >
         <Text style={styles.title}>{title}</Text>
@@ -44,7 +56,11 @@ const styles = StyleSheet.create({
   },
 
   poster: {
-    width: 100, height: 140, resizeMode: 'cover', borderRadius: 8, position: 'absolute', bottom: -70, left: 16
+    width: 100, height: 140,
+    resizeMode: 'cover',
+    borderRadius: 8,
+    position: 'absolute',
+    bottom: -70, left: 16
   },
   infoContainer: { marginTop: 66, padding: 16 },
   backIcon: {
@@ -54,6 +70,9 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     padding: 6,
     backgroundColor: colors.white
+  },
+  favoriteIcon: {
+    position: 'absolute', bottom: -32, right: 16
   },
   title: {
     color: colors.black,
