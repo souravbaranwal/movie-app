@@ -1,8 +1,7 @@
-import React, { memo, useCallback } from 'react';
+import React, { memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import FastImage from 'react-native-fast-image';
 import { useNavigation } from '@react-navigation/native';
-import { useFocusEffect } from '@react-navigation/native';
 import { View, Text, StyleSheet, Pressable } from 'react-native';
 import Animated, {
   useSharedValue,
@@ -28,11 +27,9 @@ const movieCard = ({ movie, index }) => {
     };
   });
 
-  useFocusEffect(
-    useCallback(() => {
-      handleItemVisibility();
-    }, [])
-  );
+  useEffect(() => {
+    handleItemVisibility();
+  }, []);
 
   const handleItemVisibility = () => {
     opacity.value = withSpring(1);

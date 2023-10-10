@@ -1,15 +1,34 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import PropTypes from 'prop-types';
 import Icon from 'react-native-remix-icon';
 import { View, TextInput, StyleSheet } from 'react-native';
-import PropTypes from 'prop-types';
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  withTiming,
+  withSpring,
+} from 'react-native-reanimated';
 
 import { colors } from '../constants/colors';
 
 
 export const SearchInput = ({ searchString, setSearchString }) => {
+  const opacity = useSharedValue(0);
+  const animatedStyle = useAnimatedStyle(() => {
+    return {
+      opacity: withTiming(opacity.value, { duration: 200 }),
+    };
+  });
 
+  useEffect(() => {
+    handleItemVisibility();
+  }, []);
+
+  const handleItemVisibility = () => {
+    opacity.value = withSpring(1);
+  };
   return (
-    <View style={styles.inputContainer}>
+    <Animated.View style={[styles.inputContainer, animatedStyle]}>
       <TextInput style={styles.input} value={searchString}
         placeholder="Search movie…"
         placeholderTextColor={colors.white}
@@ -17,7 +36,7 @@ export const SearchInput = ({ searchString, setSearchString }) => {
       <View style={styles.iconContainer}>
         <Icon name="search-line" size="16" color={colors.white} />
       </View>
-    </View>
+    </Animated.View>
   );
 };
 
@@ -33,13 +52,13 @@ const styles = StyleSheet.create({
     marginTop: 8,
   },
   input: {
-    height: 32,
+    height: 36,
     padding: 10,
     flex: 1,
     color: colors.black,
-    fontSize: 13,
+    fontSize: 14,
   },
-  iconContainer: { backgroundColor: colors.accent, height: 32, width: 32, justifyContent: 'center', alignItems: 'center', borderTopRightRadius: 8, borderBottomRightRadius: 8 },
+  iconContainer: { backgroundColor: colors.accent, height: 36, width: 36, justifyContent: 'center', alignItems: 'center', borderTopRightRadius: 8, borderBottomRightRadius: 8 },
 });
 
 SearchInput.prototypes = {

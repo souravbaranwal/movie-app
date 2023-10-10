@@ -17,7 +17,7 @@ export const DetailsScreen = () => {
   return (
     <View style={styles.mainContainer}>
       <ImageBackground source={{ uri: `https://image.tmdb.org/t/p/original/${backdrop_path}` }} resizeMode="cover" style={[styles.backdrop, { width, height: height / 2, paddingTop: insets.top }]}>
-        <TouchableOpacity activeOpacity={0.6} onPress={navigation.goBack} style={[styles.backIcon, { top: insets.top - 16 }]}>
+        <TouchableOpacity activeOpacity={0.6} onPress={navigation.goBack} style={[styles.backIcon, { top: insets.top }]}>
           <Icon name="arrow-left-fill" size="32" color={colors.white} />
         </TouchableOpacity>
         <Image source={{ uri: `https://image.tmdb.org/t/p/original/${poster_path}` }} resizeMode="cover" style={[styles.poster]} />
@@ -50,14 +50,6 @@ const styles = StyleSheet.create({
     left: 16,
     borderRadius: 8,
     padding: 6,
-    shadowColor: colors.white,
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    shadowOpacity: 0.22,
-    shadowRadius: 2.22,
-    elevation: 3,
   },
   title: {
     color: colors.black,

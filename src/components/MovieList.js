@@ -3,14 +3,17 @@ import PropTypes from 'prop-types';
 import { View, StyleSheet, FlatList, Keyboard, } from 'react-native';
 
 import { SearchInput } from './SearchInput';
-import { EmptyPlaceholder } from './EmptyPlaceholder';
-import { generateEmptyArray, checkEquality } from '../utils';
 import { MemoizedMovieCard } from './MovieCard';
+import { EmptyPlaceholder } from './EmptyPlaceholder';
+import { useIsFocused } from '@react-navigation/native';
+import { generateEmptyArray, checkEquality } from '../utils';
 
 const placeholderArray = generateEmptyArray(20);
 
 export const MovieList = ({ movies, isLoading, refetch }) => {
   const [searchString, setSearchString] = useState('');
+  const isFocused = useIsFocused();
+
   const keyExtractor = item => isLoading ? item : item.id;
   const renderItem = ({ item, index }) => isLoading ? <EmptyPlaceholder /> : <MemoizedMovieCard movie={item} index={index} />;
 
@@ -18,9 +21,13 @@ export const MovieList = ({ movies, isLoading, refetch }) => {
     ({ title }) =>
       checkEquality(title, searchString)
   );
+  if (!isFocused) {
+    return null;
+  }
 
   return (
     <View style={styles.mainContainer}>
+      <SearchInput setSearchString={setSearchString} searchString={searchString} />
       <FlatList
         data={isLoading ? placeholderArray : filteredMovies}
         renderItem={renderItem}
@@ -29,8 +36,7 @@ export const MovieList = ({ movies, isLoading, refetch }) => {
         showsVerticalScrollIndicator={false}
         onRefresh={refetch}
         refreshing={false}
-        onScrollBeginDrag={() => Keyboard.dismiss()}
-        ListHeaderComponent={<SearchInput setSearchString={setSearchString} searchString={searchString} />}
+        onScrollBeginDrag={Keyboard.dismiss}
         ItemSeparatorComponent={() => {
           return (
             <View
