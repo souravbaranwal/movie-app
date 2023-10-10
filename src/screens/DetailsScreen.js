@@ -16,9 +16,9 @@ export const DetailsScreen = () => {
   const navigation = useNavigation();
   return (
     <View style={styles.mainContainer}>
-      <ImageBackground source={{ uri: getImageUrl(backdrop_path) }} resizeMode="cover" style={[styles.backdrop, { width, height: height / 2, paddingTop: insets.top }]}>
-        <TouchableOpacity activeOpacity={0.6} onPress={navigation.goBack} style={[styles.backIcon, { top: insets.top }]}>
-          <Icon name="arrow-left-fill" size="32" color={colors.white} />
+      <ImageBackground source={{ uri: getImageUrl(backdrop_path) }} resizeMode="cover" style={[styles.backdrop, { width, height: height / 2 }]}>
+        <TouchableOpacity activeOpacity={0.6} onPress={navigation.goBack} style={styles.backIcon}>
+          <Icon name="arrow-left-line" size="24" color={colors.black} />
         </TouchableOpacity>
         <FastImage source={{
           uri: getImageUrl(poster_path), priority: FastImage.priority.high,
@@ -50,8 +50,10 @@ const styles = StyleSheet.create({
   backIcon: {
     position: 'absolute',
     left: 16,
+    top: 16,
     borderRadius: 8,
     padding: 6,
+    backgroundColor: colors.white
   },
   title: {
     color: colors.black,

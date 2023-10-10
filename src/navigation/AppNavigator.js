@@ -1,11 +1,12 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, } from '@react-navigation/native';
 
 import { screenNames } from './ScreenNames';
 import { DetailsScreen, HomeScreen } from '../screens';
 
 const Stack = createStackNavigator();
+
 
 export const AppNavigator = () => {
 
@@ -14,10 +15,11 @@ export const AppNavigator = () => {
       <Stack.Navigator
         screenOptions={() => ({
           headerShown: false,
+          presentation: 'modal',
         })}>
         <Stack.Screen name={screenNames.Home} component={HomeScreen} />
         <Stack.Screen name={screenNames.Details} component={DetailsScreen} />
       </Stack.Navigator>
-    </NavigationContainer>
+    </NavigationContainer >
   );
 };

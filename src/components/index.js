@@ -1,6 +1,5 @@
 export { Header } from './Header';
 export { MovieList } from './MovieList';
-export { TopTabBar } from './TopTabBar';
 export { SearchInput } from './SearchInput';
 export { PopularMovies } from './PopularMovies';
 export { MemoizedMovieCard } from './MovieCard';
