@@ -46,7 +46,7 @@ const movieCard = ({ movie, index }) => {
 
   return (<AnimatedPressable onPress={handleNavigation}
     onLongPress={handleNavigation}
-    style={[styles.movieCard]} >
+    style={[styles.movieCard, animatedStyle]} >
     <FastImage source={{
       uri: getImageUrl(poster_path), priority: FastImage.priority.high,
     }} style={styles.poster} accessibilityLabel={`${title} poster`} alt={`${title} poster`} resizeMode={FastImage.resizeMode.cover} />
@@ -96,6 +96,7 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     marginBottom: 4,
     color: colors.black,
+    width: '90%'
   },
   value: {
     marginBottom: 4,
