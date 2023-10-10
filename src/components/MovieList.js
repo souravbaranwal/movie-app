@@ -21,7 +21,6 @@ export const MovieList = ({ movies, isLoading, refetch }) => {
 
   return (
     <View style={styles.mainContainer}>
-
       <FlatList
         data={isLoading ? placeholderArray : filteredMovies}
         renderItem={renderItem}

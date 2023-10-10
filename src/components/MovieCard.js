@@ -1,8 +1,9 @@
 import React, { memo, useCallback } from 'react';
 import PropTypes from 'prop-types';
+import FastImage from 'react-native-fast-image';
 import { useNavigation } from '@react-navigation/native';
 import { useFocusEffect } from '@react-navigation/native';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Pressable } from 'react-native';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -12,9 +13,8 @@ import Animated, {
 
 import { colors } from '../constants/colors';
 import { screenNames } from '../navigation/ScreenNames';
-import FastImage from 'react-native-fast-image';
 
-const AnimatedTouchable = Animated.createAnimatedComponent(TouchableOpacity);
+const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
 const movieCard = ({ movie, index }) => {
   const navigation = useNavigation();
@@ -24,7 +24,7 @@ const movieCard = ({ movie, index }) => {
 
   const animatedStyle = useAnimatedStyle(() => {
     return {
-      opacity: withTiming(opacity.value, { duration: 500 * index }),
+      opacity: withTiming(opacity.value, { duration: 300 * index }),
     };
   });
 
@@ -38,9 +38,15 @@ const movieCard = ({ movie, index }) => {
     opacity.value = withSpring(1);
   };
 
-  return (<AnimatedTouchable activeOpacity={0.6} onPress={() => navigation.navigate(screenNames.Details, { movie })} style={[styles.movieCard, animatedStyle]}>
+  const handleNavigation = () => {
+    navigation.navigate(screenNames.Details, { movie });
+  };
+
+  return (<AnimatedPressable onPress={handleNavigation}
+    onLongPress={handleNavigation}
+    style={[styles.movieCard, animatedStyle]}>
     <FastImage source={{
-      uri: `https://image.tmdb.org/t/p/original/${poster_path}`, priority: FastImage.priority.normal,
+      uri: `https://image.tmdb.org/t/p/original/${poster_path}`, priority: FastImage.priority.high,
     }} style={styles.poster} accessibilityLabel={`${title} poster`} alt={`${title} poster`} resizeMode={FastImage.resizeMode.cover} />
     <View style={styles.movieInfoContainer}>
       <Text style={styles.title} numberOfLines={1}
@@ -48,7 +54,7 @@ const movieCard = ({ movie, index }) => {
       <Text style={styles.label}>Release Date: <Text style={styles.value}>{release_date}</Text></Text>
       <Text style={styles.label}>Rating: <Text style={styles.value}>{vote_average}</Text></Text>
     </View>
-  </AnimatedTouchable>);
+  </AnimatedPressable>);
 };
 
 export const MemoizedMovieCard = memo(movieCard);
