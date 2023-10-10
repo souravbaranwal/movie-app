@@ -7,7 +7,6 @@ import { DetailsScreen, HomeScreen } from '../screens';
 
 const Stack = createStackNavigator();
 
-
 export const AppNavigator = () => {
 
   return (

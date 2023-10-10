@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import Toast from 'react-native-toast-message';
 
 const initialState = {
   favoriteMovies: [],
@@ -13,8 +14,18 @@ const movies = createSlice({
       const index = state.favoriteMovies.findIndex(item => item.id === payload.id);
       if (index !== -1) {
         state.favoriteMovies.splice(index, 1);
+        Toast.show({
+          type: 'success',
+          position: 'top',
+          text2: 'Removed from Favorites',
+        });
       } else {
         state.favoriteMovies.push(payload);
+        Toast.show({
+          type: 'success',
+          position: 'top',
+          text2: 'Added to Favorites',
+        });
       }
     }
   }
