@@ -1,22 +1,16 @@
-import React, { memo, useEffect } from 'react';
+import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import Icon from 'react-native-remix-icon';
 import FastImage from 'react-native-fast-image';
 import { useNavigation } from '@react-navigation/native';
-import { Text, View, StyleSheet, Pressable } from 'react-native';
-import Animated, {
-  useSharedValue,
-  useAnimatedStyle,
-  withTiming,
-  withSpring,
-} from 'react-native-reanimated';
+import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
+import * as Animatable from 'react-native-animatable';
 
 import { colors } from '../constants/colors';
 import { getImageUrl, isFavorite } from '../utils';
 import { screenNames } from '../navigation/ScreenNames';
 
-const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
 
 
@@ -26,42 +20,33 @@ const movieCard = ({ movie, index }) => {
   const { title, release_date, vote_average, poster_path } = movie;
   const favoriteMovies = useSelector(({ moviesReducer: { favoriteMovies } }) => favoriteMovies);
 
-  const opacity = useSharedValue(0);
-
-  const animatedStyle = useAnimatedStyle(() => {
-    return {
-      opacity: withTiming(opacity.value, { duration: 300 * index }),
-    };
-  });
-
-  useEffect(() => {
-    handleItemVisibility();
-  }, []);
-
-  const handleItemVisibility = () => {
-    opacity.value = withSpring(1);
-  };
-
   const handleNavigation = () => {
     navigation.navigate(screenNames.Details, { movie });
   };
 
-  return (<AnimatedPressable onPress={handleNavigation}
-    onLongPress={handleNavigation}
-    style={[styles.movieCard, animatedStyle]} >
-    <FastImage source={{
-      uri: getImageUrl(poster_path), priority: FastImage.priority.high,
-    }} style={styles.poster} accessibilityLabel={`${title} poster`} alt={`${title} poster`} resizeMode={FastImage.resizeMode.cover} />
-    <View style={styles.movieInfoContainer} >
-      <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-        <Text style={styles.title} numberOfLines={1}
-        >{title}</Text>
-        <Icon name={`heart-2-${isFavorite(favoriteMovies, movie) ? 'fill' : 'line'}`} size="24" color={colors.red} />
-      </View>
-      <Text style={styles.label}>Release Date: <Text style={styles.value}>{release_date}</Text></Text>
-      <Text style={styles.label}>Rating: <Text style={styles.value}>{vote_average}</Text></Text>
-    </View>
-  </AnimatedPressable >);
+  return (
+    <Animatable.View animation="fadeInRight" useNativeDriver
+      duration={1000}
+      delay={index * 300}>
+      <TouchableOpacity onPress={handleNavigation}
+        onLongPress={handleNavigation}
+        activeOpacity={0.6}
+        style={styles.movieCard} >
+        <FastImage source={{
+          uri: getImageUrl(poster_path), priority: FastImage.priority.high,
+        }} style={styles.poster} accessibilityLabel={`${title} poster`} alt={`${title} poster`} resizeMode={FastImage.resizeMode.cover} />
+        <View style={styles.movieInfoContainer} >
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+            <Text style={styles.title} numberOfLines={1}
+            >{title}</Text>
+            <Icon name={`heart-2-${isFavorite(favoriteMovies, movie) ? 'fill' : 'line'}`} size="24" color={colors.red} />
+          </View>
+          <Text style={styles.label}>Release Date: <Text style={styles.value}>{release_date}</Text></Text>
+          <Text style={styles.label}>Rating: <Text style={styles.value}>{vote_average}</Text></Text>
+        </View>
+      </ TouchableOpacity>
+    </Animatable.View>
+  );
 };
 
 export const MemoizedMovieCard = memo(movieCard);
@@ -72,14 +57,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     height: 110,
     borderRadius: 8,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    shadowOpacity: 0.22,
-    shadowRadius: 2.22,
-    elevation: 3,
+    borderWidth: 1,
+    borderColor: colors.border,
     marginHorizontal: 16,
     flexDirection: 'row'
   },
@@ -89,7 +68,7 @@ const styles = StyleSheet.create({
   },
   poster: {
     width: 80,
-    height: 110,
+    height: '100%',
     borderTopLeftRadius: 8,
     borderBottomLeftRadius: 8
   },

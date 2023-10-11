@@ -1,34 +1,18 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import Icon from 'react-native-remix-icon';
 import { View, TextInput, StyleSheet } from 'react-native';
-import Animated, {
-  useSharedValue,
-  useAnimatedStyle,
-  withTiming,
-  withSpring,
-} from 'react-native-reanimated';
+import * as Animatable from 'react-native-animatable';
 
 import { colors } from '../constants/colors';
 
 
 export const SearchInput = ({ searchString, setSearchString }) => {
-  const opacity = useSharedValue(0);
-  const animatedStyle = useAnimatedStyle(() => {
-    return {
-      opacity: withTiming(opacity.value, { duration: 200 }),
-    };
-  });
 
-  useEffect(() => {
-    handleItemVisibility();
-  }, []);
-
-  const handleItemVisibility = () => {
-    opacity.value = withSpring(1);
-  };
   return (
-    <Animated.View style={[styles.inputContainer, animatedStyle]}>
+    <Animatable.View style={[styles.inputContainer]} animation="fadeIn" useNativeDriver
+      duration={1000}
+      delay={300}>
       <TextInput style={styles.input} value={searchString}
         placeholder="Search movie…"
         placeholderTextColor={colors.white}
@@ -36,7 +20,7 @@ export const SearchInput = ({ searchString, setSearchString }) => {
       <View style={styles.iconContainer}>
         <Icon name="search-line" size="16" color={colors.white} />
       </View>
-    </Animated.View>
+    </Animatable.View>
   );
 };
 
