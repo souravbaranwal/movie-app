@@ -55,12 +55,9 @@ React Query
 ## Features Implemented
 
 1. Tabbed interface to switch between the different movie lists (Now Playing, Popular, Top Rated, Upcoming & Favorites).
-2. Each list consists of movie cards which is displaying details of the movie (poster, title, release date, average rating). It also has an heart icon which displays if the movie is marked favorite or not.
-3. Tapping a movie card leads to movie details screen which shows movie details (backdrop poster,poster, title, release date, average rating, description). The screen also has a favorite button which can be used to favorite or unfavorite the movie. On completion of the action a toast message is displayed and the changes can be seen on the favorites tab.
+2. Each list consists of movie cards which are displaying details of the movie (poster, title, release date, average rating). It also has a heart icon which displays if the movie is marked favourite or not.
+3. Tapping a movie card leads to a movie details screen which shows movie details (backdrop poster, poster, title, release date, average rating, description). The screen also has a favorite button which can be used to favorite or unfavorite the movie. On completion of the action a toast message is displayed and the changes can be seen on the favorites tab.
 4. Every screen has a search input and the movies can be searched from there.
-5. The movie list is using react query's useInfiniteQuery hook for infinite scrolling.
-6. The movie card in the list is having enter animation with staggering effect.
+5. The movie list is using react-query's useInfiniteQuery hook for infinite scrolling.
+6. The movie card in the list has enter animation with staggering effect.
 
-## Important links
-
-[Demo](https://vimeo.com/873436614/376260efc1?share=copy)
