@@ -10,7 +10,7 @@ import { colors } from '../constants/colors';
 export const SearchInput = ({ searchString, setSearchString }) => {
 
   return (
-    <Animatable.View style={[styles.inputContainer]} animation="fadeIn" useNativeDriver
+    <Animatable.View style={styles.inputContainer} animation="fadeIn" useNativeDriver
       duration={1000}
       delay={300}>
       <TextInput style={styles.input} value={searchString}
