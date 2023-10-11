@@ -1,17 +1,18 @@
 module.exports = {
   'env': {
-    'browser': true,
-    'es2021': true
+    es6: true,
+    node: true,
+    jest: true,
   },
   'extends': [
     'eslint:recommended',
-    'plugin:react/recommended'
+    'plugin:react/recommended',
+    'plugin:react-hooks/recommended'
   ],
   'overrides': [
     {
       'env': {
-        'node': true,
-        'react-native/react-native': true
+        'node': true
       },
       'files': [
         '.eslintrc.{js,cjs}'
@@ -26,10 +27,12 @@ module.exports = {
     'sourceType': 'module'
   },
   'plugins': [
-    'react',
-    'react-native'
+    'react', 'react-hooks'
   ],
   'rules': {
+    'no-empty-function': 'off',
+    'react/display-name': 'off',
+    'react/prop-types': 'off',
     'indent': [
       'error',
       2
@@ -45,7 +48,6 @@ module.exports = {
     'semi': [
       'error',
       'always'
-    ],
-    'react/prop-types': 'off',
+    ]
   }
 };

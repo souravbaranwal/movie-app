@@ -73,7 +73,7 @@ export const MovieList = ({ movies = [], isLoading = false, refetch = () => { },
           );
         }}
         ListEmptyComponent={
-          <View style={{ alignItems: 'center' }}>
+          <View style={styles.emptyComponent}>
             <Text>There are no movies to show.</Text>
           </View>
         }
@@ -91,6 +91,9 @@ const styles = StyleSheet.create({
   },
   footer: {
     marginHorizontal: 16
+  },
+  emptyComponent: {
+    alignItems: 'center'
   }
 });
 

@@ -15,7 +15,7 @@ import { screenNames } from '../navigation/ScreenNames';
 
 
 
-const movieCard = ({ movie, index }) => {
+const MovieCard = ({ movie, index }) => {
   const navigation = useNavigation();
   const { title, release_date, vote_average, poster_path } = movie;
   const favoriteMovies = useSelector(({ moviesReducer: { favoriteMovies } }) => favoriteMovies);
@@ -36,7 +36,7 @@ const movieCard = ({ movie, index }) => {
           uri: getImageUrl(poster_path), priority: FastImage.priority.high,
         }} style={styles.poster} accessibilityLabel={`${title} poster`} alt={`${title} poster`} resizeMode={FastImage.resizeMode.cover} />
         <View style={styles.movieInfoContainer} >
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+          <View style={styles.titleContainer}>
             <Text style={styles.title} numberOfLines={1}
             >{title}</Text>
             <Icon name={`heart-2-${isFavorite(favoriteMovies, movie) ? 'fill' : 'line'}`} size="24" color={colors.red} />
@@ -49,7 +49,7 @@ const movieCard = ({ movie, index }) => {
   );
 };
 
-export const MemoizedMovieCard = memo(movieCard);
+export const MemoizedMovieCard = memo(MovieCard);
 
 
 const styles = StyleSheet.create({
@@ -79,6 +79,7 @@ const styles = StyleSheet.create({
     color: colors.black,
     width: '90%'
   },
+  titleContainer: { flexDirection: 'row', justifyContent: 'space-between' },
   value: {
     marginBottom: 4,
     color: colors.secondaryText,
@@ -93,7 +94,7 @@ const styles = StyleSheet.create({
   }
 });
 
-movieCard.prototypes = {
+MovieCard.prototypes = {
   movie: PropTypes.array.isRequired,
   index: PropTypes.number.isRequired,
 };
