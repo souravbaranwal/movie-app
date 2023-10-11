@@ -10,9 +10,14 @@ import { queryKeys } from '../hooks/query/queryKeys';
 
 
 export const TopRatedMovies = () => {
+  // The queryClient is a part of React Query and is used to interact with the query cache. In our specific case, it's used to invalidate queries (e.g., refresh the API data) when the screen regains focus. Note that in many scenarios, such as data with a predictable stale time, you can avoid manual invalidation by setting the `staleTime` value directly in the respective query hook under the `useMovies` hook. This can help streamline data management and avoid the need for manual invalidation.
   const queryClient = useQueryClient();
   const { useGetTopRated } = useMovies();
   const { data: movies, isLoading, refetch, fetchNextPage, hasNextPage, isFetchingNextPage } = useGetTopRated();
+
+
+
+  // Refreshing the query whenever the screen is in focus.
 
   useFocusEffect(
     useCallback(() => {

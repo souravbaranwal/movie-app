@@ -1,5 +1,7 @@
 import { useState } from 'react';
 
+
+//  This hook is used for handling manual data refresh triggered by a user interaction.
 export function useRefreshByUser(refetch) {
   const [isRefetchingByUser, setIsRefetchingByUser] = useState(false);
 
